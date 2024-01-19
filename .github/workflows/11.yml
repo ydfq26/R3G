@@ -73,7 +73,16 @@ jobs:
 
     - name: Install feeds
       run: cd openwrt && ./scripts/feeds install -a
+    - name: Update feeds
+      run: cd openwrt && ./scripts/feeds update -a
 
+    - name: Install feeds
+      run: cd openwrt && ./scripts/feeds install -a
+
+
+
+
+    
     - name: Load custom configuration
       run: |
         # 装载自定义配置
@@ -132,15 +141,7 @@ jobs:
         name: OpenWrt_bin${{ env.DEVICE_NAME }}${{ env.FILE_DATE }}
         path: openwrt/bin
 
-    - name: Organize files
-      id: organize
-      if: env.UPLOAD_FIRMWARE == 'true' && !cancelled()
-      run: |
-        # 整理文件
-        cd openwrt/bin/targets/*/*
-        rm -rf packages
-        echo "FIRMWARE=$PWD" >> $GITHUB_ENV
-        echo "::set-output name=status::success"
+ 
 
     - name: Upload firmware directory
       uses: actions/upload-artifact@main
