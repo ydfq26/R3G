@@ -1,0 +1,58 @@
+name: OpenWrt Build and Upload
+
+on:
+  push:
+    branches:
+      - main  # 根据你的主分支名称进行调整
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout Repository
+      uses: actions/checkout@v2
+
+    - name: Set Up Build Environment
+      run: |
+        sudo apt update
+        sudo apt install -y \
+          build-essential \
+          libncurses5-dev \
+          libncursesw5-dev \
+          zlib1g-dev \
+          gawk \
+          flex \
+          bison \
+          unzip \
+          gettext \
+          wget \
+          python3
+
+    - name: Clone OpenWrt Repository
+      run: |
+        git clone https://github.com/openwrt/openwrt
+        cd openwrt
+
+    - name: Configure OpenWrt
+      run: |
+        ./scripts/feeds update -a
+        ./scripts/feeds install -a
+        make defconfig
+    - name: Configure OpenWrt
+      run: |
+      
+        make download -j1 V=s
+  #  - name: Compile OpenWrt
+    #  run: |
+    #    make -j$(nproc)
+
+    - name: Package DL Folder
+      run: |
+        tar -czvf dl.tar.gz dl
+
+    - name: Upload DL Folder
+      uses: actions/upload-artifact@v2
+      with:
+        name: dl-folder
+        path: openwrt/dl.tar.gz
