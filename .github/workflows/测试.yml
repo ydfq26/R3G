@@ -1,0 +1,64 @@
+name: 测试使用config
+
+on:
+  workflow_dispatch:
+    inputs:
+      enable-ssh:
+        description: "Enable SSH connection"
+        required: false
+        default: "false"
+
+jobs:
+  build:
+    name: Build OpenWrt Firmware
+    runs-on: ubuntu-20.04
+
+    steps:
+      - name: Checkout OpenWrt Repository
+        uses: actions/checkout@v2
+
+      - name: Update System Packages
+        run: sudo apt-get update && sudo apt-get upgrade -y
+
+      - name: Install Build Dependencies
+        run: |
+          sudo apt install -y ack antlr3 aria2 asciidoc autoconf automake autopoint binutils bison build-essential \
+          bzip2 ccache cmake cpio curl device-tree-compiler fastjar flex gawk gettext gcc-multilib g++-multilib \
+          git gperf haveged help2man intltool libc6-dev-i386 libelf-dev libglib2.0-dev libgmp3-dev libltdl-dev \
+          libmpc-dev libmpfr-dev libncurses5-dev libncursesw5-dev libreadline-dev libssl-dev libtool lrzsz \
+          mkisofs msmtp nano ninja-build p7zip p7zip-full patch pkgconf python2.7 python3 python3-pip libpython3-dev qemu-utils \
+          rsync scons squashfs-tools subversion swig texinfo uglifyjs upx-ucl unzip vim wget xmlto xxd zlib1g-dev
+
+     
+
+      - name: 克隆代码
+        run: |
+          cd lede
+      - name: 复制config
+        run: cp .config openwrt/.config
+      - name: 更新安装插件
+        run: |
+          ./scripts/feeds update -a
+          ./scripts/feeds install -a
+
+      - name: 配置config
+        run: |
+          make defconfig
+
+      - name: 是否开启ssh
+        if: ${{ github.event.inputs.enable-ssh == 'true' }}
+        run: echo "SSH is enabled"
+
+      - name: 下载dl
+        run: |
+          make -j8 download V=s
+
+      - name: 开始编译
+        run: |
+          make -j1 V=s
+
+      - name: 上传固件
+        uses: actions/upload-artifact@v2
+        with:
+          name: openwrt-firmware
+          path: bin
