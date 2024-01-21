@@ -41,7 +41,7 @@ jobs:
       - name: 执行diy1脚本
         run: |
          chmod +x /home/runner/work/R3G/R3G/quan1.sh
-         /home/runner/work/R3G/R3G/quan1.sh
+         ./ home/runner/work/R3G/R3G/quan1.sh
 
 
       - name: 更新安装插件
