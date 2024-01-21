@@ -22,20 +22,17 @@ jobs:
 
       - name: 安装依赖
         run: |
-          #sudo apt-get install build-essential ccache ecj fastjar file g++ gawk gettext git java-propose-classpath libelf-dev libncurses5-dev libncursesw5-dev libssl-dev python python2.7-dev python3 unzip wget python3-distutils python3-setuptools python3-dev rsync subversion swig time xsltproc zlib1g-dev
-          #sudo apt install build-essential clang flex g++ gawk gcc-multilib gettext git libncurses5-dev libssl-dev python3-distutils rsync unzip zlib1g-dev file wget
           sudo apt install -y ack antlr3 aria2 asciidoc autoconf automake autopoint binutils bison build-essential \
           bzip2 ccache cmake cpio curl device-tree-compiler fastjar flex gawk gettext gcc-multilib g++-multilib \
           git gperf haveged help2man intltool libc6-dev-i386 libelf-dev libglib2.0-dev libgmp3-dev libltdl-dev \
           libmpc-dev libmpfr-dev libncurses5-dev libncursesw5-dev libreadline-dev libssl-dev libtool lrzsz \
           mkisofs msmtp nano ninja-build p7zip p7zip-full patch pkgconf python2.7 python3 python3-pip libpython3-dev qemu-utils \
           rsync scons squashfs-tools subversion swig texinfo uglifyjs upx-ucl unzip vim wget xmlto xxd zlib1g-dev
-      
+
       - name: 克隆代码
         run: |
           git clone https://github.com/coolsnowwolf/lede
           cd lede 
-
 
       - name: 执行diy1脚本
         run: |
@@ -48,14 +45,12 @@ jobs:
           ./scripts/feeds update -a
           ./scripts/feeds install -a
 
-
       - name: 配置config
         run: |
-            cd lede
-            #cp /home/runner/work/R3G/R3G/lede/
-            cp /home/runner/work/R3G/R3G/r3g.config  .config
-            make defconfig
-            #make menuconfig
+          cd lede
+          cp /home/runner/work/R3G/R3G/r3g.config .config
+          make defconfig
+          # make menuconfig
 
       - name: 是否开启ssh
         if: ${{ github.event.inputs.enable-ssh == 'true' }}
@@ -68,14 +63,12 @@ jobs:
 
       - name: 执行diy2脚本
         run: |
-          chmod +x ${{ github.workspace }}/diy1.sh
-          ./${{ github.workspace }}/diy1.sh
-          
+          chmod +x ${{ github.workspace }}/diy2.sh
+          ./${{ github.workspace }}/diy2.sh
+
       - name: 复制.config文件到根目录
         run: |
-          cd lede
-          cp .config /home/runner/work/R3G/R3G/.config
-        
+          cp lede/.config /home/runner/work/R3G/R3G/.config
 
       - name: 开始编译
         run: |
@@ -85,20 +78,20 @@ jobs:
       - name: 上传固件
         uses: actions/upload-artifact@v2
         with:
-          name:固件
+          name: openwrt-firmware
           path: lede/bin
-          
+
       - name: 上传.config文件
         uses: actions/upload-artifact@v2
         with:
-          name: config文件
+          name: openwrt-config
           path: lede/.config
-          
-       - name: 打包并上传dl文件夹
+
+      - name: 打包并上传dl文件夹
         run: |
           cd lede
           tar -czf dl.tar.gz dl
         uses: actions/upload-artifact@v2
         with:
-          name: dl文件
+          name: openwrt-dl
           path: lede/dl.tar.gz
