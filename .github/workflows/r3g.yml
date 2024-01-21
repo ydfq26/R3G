@@ -103,8 +103,9 @@ jobs:
 
       - name: 配置config
         run: |
+           cp r3g.config .config
            make defconfig
-           #make menuconfig
+           make menuconfig
 
       - name: 是否开启ssh
         if: ${{ github.event.inputs.enable-ssh == 'true' }}
