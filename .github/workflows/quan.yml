@@ -40,11 +40,10 @@ jobs:
      
       - name: 执行diy1脚本
         run: |
-         #chmod +x /home/runner/work/R3G/R3G/quan1.sh
-         #bash /home/runner/work/R3G/R3G/quan1.sh
-          chmod +x quan1.sh
-          bash quan1.sh
-
+         cd lede
+         chmod +x /home/runner/work/R3G/R3G/quan1.sh
+         bash /home/runner/work/R3G/R3G/quan1.sh
+         
       - name: 更新安装插件
         run: |
           cd lede
@@ -65,8 +64,9 @@ jobs:
   
       - name: 执行diy2脚本
         run: |
-          chmod +x diy2.sh
-          ./diy2.sh
+          cd lede
+           chmod +x /home/runner/work/R3G/R3G/diy2.sh
+            bash /home/runner/work/R3G/R3G/diy2.sh
 
       - name: 复制.config文件到根目录
         run: |
