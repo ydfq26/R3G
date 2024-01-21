@@ -6,7 +6,9 @@ echo 'src-git smpackage https://github.com/kenzok8/small-package' >>feeds.conf.d
 echo 'src-git kenzo https://github.com/kenzok8/openwrt-packages' >>feeds.conf.default
 echo 'src-git small https://github.com/kenzok8/small' >>feeds.conf.default
 
-
+echo "src/gz smpackage https://github.com/kenzok8/small-package" >> feeds.conf.default
+echo "src/gz kenzo https://github.com/kenzok8/openwrt-packages" >> feeds.conf.default
+echo "src/gz small https://github.com/kenzok8/small" >> feeds.conf.default
 
 # 修改WiFi名称
 #sed -i 's/option ssid OpenWrt/option ssid xiaomi-66/' package/kernel/mac80211/files/lib/wifi/mac80211.sh
