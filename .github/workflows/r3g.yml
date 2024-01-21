@@ -1,4 +1,4 @@
-name: r3g
+name:  r3g
 
 on:
   workflow_dispatch:
@@ -91,7 +91,7 @@ jobs:
         run: |
           cd lede
           tar -czf dl.tar.gz dl
-        uses: actions/upload-artifact@v2
-        with:
+          uses: actions/upload-artifact@v2
+          with:
           name: openwrt-dl
           path: lede/dl.tar.gz
