@@ -36,8 +36,8 @@ jobs:
 
       - name: 执行diy1脚本
         run: |
-          chmod +x diy1.sh
-          ./diy1.sh
+          chmod +x quan1.sh
+          ./quan1.sh
 
       - name: 更新安装插件
         run: |
@@ -48,7 +48,7 @@ jobs:
       - name: 配置config
         run: |
           cd lede
-          cp /home/runner/work/R3G/R3G/r3g.config .config
+          cp /home/runner/work/R3G/R3G/quan.config .config
           make defconfig
           # make menuconfig
 
@@ -64,7 +64,7 @@ jobs:
 
       - name: 复制.config文件到根目录
         run: |
-          cp lede/.config /home/runner/work/R3G/R3G/.config
+          cp /home/runner/work/R3G/R3G/lede/.config  .config
           
       - name: 下载dl
         run: |
