@@ -37,7 +37,7 @@ jobs:
       - name: 执行diy1脚本
         run: |
           chmod +x ${{ github.workspace }}/diy1.sh
-          ./${{ github.workspace }}/diy1.sh
+          .${{ github.workspace }}/diy1.sh
 
       - name: 更新安装插件
         run: |
@@ -64,7 +64,7 @@ jobs:
       - name: 执行diy2脚本
         run: |
           chmod +x ${{ github.workspace }}/diy2.sh
-          ./${{ github.workspace }}/diy2.sh
+          .${{ github.workspace }}/diy2.sh
 
       - name: 复制.config文件到根目录
         run: |
