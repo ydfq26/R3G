@@ -1,0 +1,45 @@
+name: Build OpenWrt
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout Repository
+      uses: actions/checkout@v2
+
+    - name: Update Packages
+      run: |
+        sudo apt-get update
+        sudo apt-get upgrade -y
+
+    - name: Install Dependencies
+      run: |
+        sudo apt-get install -y build-essential libncurses5-dev zlib1g-dev gawk git gettext libssl-dev xsltproc wget unzip python3
+
+    - name: Clone OpenWrt Repository
+      run: |
+        git clone https://github.com/openwrt/openwrt.git
+        cd openwrt
+
+    - name: Update and Install Feeds
+      run: |
+        ./scripts/feeds update -a
+        ./scripts/feeds install -a
+
+    - name: Configure OpenWrt
+      run: make menuconfig
+
+    - name: Compile OpenWrt
+      run: make -j$(nproc)
+
+    - name: Save Artifacts
+      uses: actions/upload-artifact@v2
+      with:
+        name: openwrt-build
+        path: bin/targets/
