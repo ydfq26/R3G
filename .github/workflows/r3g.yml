@@ -57,14 +57,16 @@ jobs:
 
       - name: 下载dl
         run: |
+          cd lede
           make download -j8 V=s
 
       - name: 开始编译
         run: |
+          cd lede
           make -j1 V=s
 
       - name: 上传固件
         uses: actions/upload-artifact@v2
         with:
           name: openwrt-firmware
-          path: openwrt/bin
+          path: lede/bin
