@@ -42,11 +42,13 @@ jobs:
           ./scripts/feeds update -a
           ./scripts/feeds install -a
 
+
       - name: 配置config
         run: |
-           cp r3g.config .config
-           make defconfig
-           make menuconfig
+            cd lede
+            cp r3g.config .config
+              make defconfig
+               make menuconfig
 
       - name: 是否开启ssh
         if: ${{ github.event.inputs.enable-ssh == 'true' }}
