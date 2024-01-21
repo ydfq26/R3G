@@ -57,7 +57,7 @@ jobs:
 
       - name: 下载dl
         run: |
-          make -j8 download V=s
+          make download -j8 V=s
 
       - name: 开始编译
         run: |
