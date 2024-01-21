@@ -3,8 +3,8 @@ name: Compile-OpenWrt
 on:
   workflow_dispatch:
     inputs:
-      force-build:
-        description: "Build new firmware anyway"
+      enable-ssh:
+        description: "Enable SSH connection"
         required: false
         default: "false"
 
