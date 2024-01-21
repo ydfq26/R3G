@@ -46,9 +46,10 @@ jobs:
       - name: 配置config
         run: |
             cd lede
-            cp ../r3g.config .config
-              make defconfig
-               make menuconfig
+            #cp /home/runner/work/R3G/R3G/lede/
+            cp /home/runner/work/R3G/R3G/r3g.config  .config
+            make defconfig
+            make menuconfig
 
       - name: 是否开启ssh
         if: ${{ github.event.inputs.enable-ssh == 'true' }}
