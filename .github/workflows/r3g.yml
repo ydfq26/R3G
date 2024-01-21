@@ -65,10 +65,14 @@ jobs:
       - name: 复制.config文件到根目录
         run: |
           cp lede/.config /home/runner/work/R3G/R3G/.config
+          
       - name: 下载dl
         run: |
           cd lede
           make download -j8 V=s
+          find dl -size -1024c -exec ls -l {} \;
+          find dl -size -1024c -exec rm -f {} \;
+          
       - name: 开始编译
         run: |
           cd lede
