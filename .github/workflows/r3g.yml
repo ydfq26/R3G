@@ -40,6 +40,10 @@ jobs:
         - name:配置config
         run: |
            make menuconfig
+        - name: 是否开启ssh
+        if: ${{ github.event.inputs.enable-ssh == 'true' }}
+        run: echo "SSH is enabled"
+           
         - name:下载dl
         run: |
             make -j8 download V=s
