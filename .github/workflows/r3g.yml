@@ -29,30 +29,34 @@ jobs:
           mkisofs msmtp nano ninja-build p7zip p7zip-full patch pkgconf python2.7 python3 python3-pip libpython3-dev qemu-utils \
           rsync scons squashfs-tools subversion swig texinfo uglifyjs upx-ucl unzip vim wget xmlto xxd zlib1g-dev
 
-      - name:克隆代码
+      - name: 克隆代码
         run: |
-         git clone https://github.com/coolsnowwolf/lede
-         cd openwrt 
-       - name:更新安装插件
+          git clone https://github.com/coolsnowwolf/lede
+          cd openwrt 
+
+      - name: 更新安装插件
         run: |
           ./scripts/feeds update -a
           ./scripts/feeds install -a
-        - name:配置config
+
+      - name: 配置config
         run: |
-           make menuconfig
-        - name: 是否开启ssh
+          make menuconfig
+
+      - name: 是否开启ssh
         if: ${{ github.event.inputs.enable-ssh == 'true' }}
         run: echo "SSH is enabled"
-           
-        - name:下载dl
+
+      - name: 下载dl
         run: |
-            make -j8 download V=s
-        - name:开始编译
+          make -j8 download V=s
+
+      - name: 开始编译
         run: |
-             make -j1 V=s 
-        - name: 上传固件
+          make -j1 V=s
+
+      - name: 上传固件
         uses: actions/upload-artifact@v2
         with:
           name: openwrt-firmware
           path: openwrt/bin
-             
