@@ -103,8 +103,8 @@ jobs:
 
       - name: 配置config
         run: |
-          make defconfig
-          make menuconfig
+           make defconfig
+           #make menuconfig
 
       - name: 是否开启ssh
         if: ${{ github.event.inputs.enable-ssh == 'true' }}
