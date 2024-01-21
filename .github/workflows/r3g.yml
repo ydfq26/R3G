@@ -59,8 +59,8 @@ jobs:
   
       - name: 执行diy2脚本
         run: |
-          chmod +x ${{ github.workspace }}/diy2.sh
-          .${{ github.workspace }}/diy2.sh
+          chmod +x diy2.sh
+          ./diy2.sh
 
       - name: 复制.config文件到根目录
         run: |
