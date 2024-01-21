@@ -46,7 +46,7 @@ jobs:
       - name: 配置config
         run: |
             cd lede
-            cp r3g.config .config
+            cp ../r3g.config .config
               make defconfig
                make menuconfig
 
