@@ -33,9 +33,12 @@ jobs:
 
       - name: 克隆代码
         run: |
+          git clone https://github.com/coolsnowwolf/lede
           cd lede
-      - name: 复制config
-        run: cp .config openwrt/.config
+      - name: 配置默认选项
+        run: |
+          cp ../.config .config
+          make defconfig
       - name: 更新安装插件
         run: |
           ./scripts/feeds update -a
