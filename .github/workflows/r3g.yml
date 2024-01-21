@@ -32,12 +32,12 @@ jobs:
       - name: 克隆代码
         run: |
           git clone https://github.com/coolsnowwolf/lede
-          cd lede 
+           
 
       - name: 执行diy1脚本
         run: |
-          chmod +x ${{ github.workspace }}/diy1.sh
-          .${{ github.workspace }}/diy1.sh
+          chmod +x diy1.sh
+          ./diy1.sh
 
       - name: 更新安装插件
         run: |
