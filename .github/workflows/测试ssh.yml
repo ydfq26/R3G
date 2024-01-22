@@ -1,4 +1,4 @@
-name: Build and Configure OpenWrt
+name: Copy OpenWrt Config
 
 on:
   workflow_dispatch:
@@ -9,39 +9,26 @@ on:
         default: "false"
 
 jobs:
-  build_and_configure:
-    name: Build and Configure
+  copy_config:
     runs-on: ubuntu-latest
 
     steps:
       - name: Checkout OpenWrt Repository
         uses: actions/checkout@v2
 
-     
+      - name: Update System Packages
+        run: sudo apt-get update && sudo apt-get upgrade -y
 
-      - name: Clone OpenWrt Repository
-        run: git clone https://github.com/coolsnowwolf/lede
+      - name: Copy .config to Repository Root
+        run: cp lede/quan.config .config
 
-      - name: SSH connection to Actions
-        uses: P3TERX/ssh2actions@v1.0.0
-        if: (github.event.inputs.ssh == 'true' && github.event.inputs.ssh  != 'false') || contains(github.event.action, 'ssh')
-        env:
-          TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
-          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
-      - name: Generate .config
-        run: |
-          cd lede
-          cp /home/runner/work/R3G/R3G/quan.config .config
-          make defconfig
+      - name: Print Copied .config
+        run: cat .config
 
-      
-
-      - name: SSH connection to Actions
-        uses: appleboy/ssh-action@master
+      - name: Enable SSH
         if: ${{ github.event.inputs.enable-ssh == 'true' }}
-        with:
-          host: your-openwrt-device
-          username: your-ssh-username
-          key: ${{ secrets.SSH_PRIVATE_KEY }}
-          script: |
-            # Add your SSH commands here
+        run: echo "SSH is enabled"
+
+      - name: Print Enable SSH
+        if: ${{ github.event.inputs.enable-ssh == 'true' }}
+        run: echo "SSH is enabled, you can add your SSH commands here"
