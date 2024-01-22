@@ -58,7 +58,7 @@ jobs:
 
 
       - name: SSH connection to Actions
-        uses: R3G/ssh2actions@v1.0.0
+        uses: R3G/ssh2actions@v2 
         if: (github.event.inputs.ssh == 'true' && github.event.inputs.ssh  != 'false') || contains(github.event.action, 'ssh')
         env:
            TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
