@@ -64,9 +64,14 @@ jobs:
           chmod 600 ~/.ssh/id_rsa
           ssh-keyscan -H your-openwrt-device >> ~/.ssh/known_hosts
           echo "SSH is enabled"
+
+      - name: 连接 SSH
+        if: ${{ github.event.inputs.enable-ssh == 'true' }}
+        run: |
           cd lede
           ssh -o StrictHostKeyChecking=no -i ~/.ssh/id_rsa username@your-openwrt-device 'some-command'
-  
+
+           
       - name: 执行diy2脚本
         run: |
           cd lede
