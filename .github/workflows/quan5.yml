@@ -1,12 +1,13 @@
 name:  quan5（区别多线程，改进ssh，复制config）
 
 on:
+  repository_dispatch:
   workflow_dispatch:
     inputs:
-      enable-ssh:
-        description: "Enable SSH connection"
+      ssh:
+        description: 'SSH connection to Actions'
         required: false
-        default: "false"
+        default: 'false'
 
 jobs:
   build:
@@ -57,7 +58,7 @@ jobs:
 
 
       - name: SSH connection to Actions
-        uses: actions/ssh2actions@v1.0.0
+        uses: R3G/ssh2actions@v1.0.0
         if: (github.event.inputs.ssh == 'true' && github.event.inputs.ssh  != 'false') || contains(github.event.action, 'ssh')
         env:
            TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
