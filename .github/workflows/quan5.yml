@@ -56,20 +56,12 @@ jobs:
           # make menuconfig
 
 
-      - name: 启用 SSH
-        if: ${{ github.event.inputs.enable-ssh == 'true' }}
-        run: |
-          mkdir -p ~/.ssh
-          echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/id_rsa
-          chmod 600 ~/.ssh/id_rsa
-          ssh-keyscan -H your-openwrt-device >> ~/.ssh/known_hosts
-          echo "SSH is enabled"
-
-      - name: 连接 SSH
-        if: ${{ github.event.inputs.enable-ssh == 'true' }}
-        run: |
-          cd lede
-          ssh -o StrictHostKeyChecking=no -i ~/.ssh/id_rsa username@your-openwrt-device 'some-command'
+      - name: SSH connection to Actions
+        uses: actions/ssh2actions@v1.0.0
+        if: (github.event.inputs.ssh == 'true' && github.event.inputs.ssh  != 'false') || contains(github.event.action, 'ssh')
+        env:
+           TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+           TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
 
            
       - name: 执行diy2脚本
