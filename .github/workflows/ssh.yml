@@ -1,4 +1,4 @@
-name: Connect via SSH
+name: Build and Configure OpenWrt
 
 on:
   workflow_dispatch:
@@ -9,15 +9,30 @@ on:
         default: "false"
 
 jobs:
-  connect-ssh:
-    runs-on: ubuntu-latest
+  build:
+    name: Build OpenWrt Firmware
+    runs-on: ubuntu-20.04
+
     steps:
+      - name: Checkout OpenWrt Repository
+        uses: actions/checkout@v2
+
+    
+
       - name: Enable SSH
         if: ${{ github.event.inputs.enable-ssh == 'true' }}
-        run: echo "SSH is enabled"
+        run: |
+          mkdir -p ~/.ssh
+          echo "$SSH_PRIVATE_KEY" > ~/.ssh/id_rsa
+          chmod 600 ~/.ssh/id_rsa
+          echo "StrictHostKeyChecking no" > ~/.ssh/config
 
-      - name: Connect via SSH
+      - name: Connect via SSH and Configure
         if: ${{ github.event.inputs.enable-ssh == 'true' }}
         run: |
-          # 在这里添加你的 SSH 连接命令
-          # 例如: ssh -i /path/to/private-key user@your-server
+          ssh -o "UserKnownHostsFile=/dev/null" -o "StrictHostKeyChecking=no" user@your-openwrt-device "cd /path/to/your/openwrt && make menuconfig"
+
+    
+
+      # ... (其他步骤，如上传固件等)
+
