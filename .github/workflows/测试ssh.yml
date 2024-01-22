@@ -1,1 +1,59 @@
 
+name: Build and Configure OpenWrt
+
+on:
+  workflow_dispatch:
+    inputs:
+      enable-ssh:
+        description: "Enable SSH connection"
+        required: false
+        default: "false"
+
+jobs:
+  build_and_configure:
+    name: Build and Configure
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout OpenWrt Repository
+        uses: actions/checkout@v2
+
+      - name: Update System Packages
+        run: sudo apt-get update && sudo apt-get upgrade -y
+
+      - name: Clone OpenWrt Repository
+        run: git clone https://github.com/coolsnowwolf/lede
+
+      - name: Configure SSH
+        if: ${{ github.event.inputs.enable-ssh == 'true' }}
+        run: |
+          mkdir -p ~/.ssh
+          echo "$SSH_PRIVATE_KEY" > ~/.ssh/id_rsa
+          chmod 600 ~/.ssh/id_rsa
+          ssh-keyscan your-openwrt-device >> ~/.ssh/known_hosts
+
+      - name: Generate .config
+        run: |
+          cd lede
+          cp /home/runner/work/R3G/R3G/quan.config .config
+          make defconfig
+
+      - name: Download Dependencies
+        run: |
+          cd lede
+          make download -j8 V=s
+
+      - name: Build Firmware
+        run: |
+          cd lede
+          make -j1 V=s
+
+      - name: SSH connection to Actions
+        uses: appleboy/ssh-action@master
+        if: ${{ github.event.inputs.enable-ssh == 'true' }}
+        with:
+          host: your-openwrt-device
+          username: your-ssh-username
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          script: |
+            # Add your SSH commands here
