@@ -16,14 +16,7 @@ jobs:
       - name: Checkout OpenWrt Repository
         uses: actions/checkout@v2
 
-      - name: Update System Packages
-        run: sudo apt-get update && sudo apt-get upgrade -y
-
-      - name: Copy .config to Repository Root
-        run: cp lede/quan.config .config
-
-      - name: Print Copied .config
-        run: cat .config
+      
 
       - name: Enable SSH
         if: ${{ github.event.inputs.enable-ssh == 'true' }}
