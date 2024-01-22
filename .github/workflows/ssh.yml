@@ -1,0 +1,23 @@
+name: Connect via SSH
+
+on:
+  workflow_dispatch:
+    inputs:
+      enable-ssh:
+        description: "Enable SSH connection"
+        required: false
+        default: "false"
+
+jobs:
+  connect-ssh:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Enable SSH
+        if: ${{ github.event.inputs.enable-ssh == 'true' }}
+        run: echo "SSH is enabled"
+
+      - name: Connect via SSH
+        if: ${{ github.event.inputs.enable-ssh == 'true' }}
+        run: |
+          # 在这里添加你的 SSH 连接命令
+          # 例如: ssh -i /path/to/private-key user@your-server
