@@ -22,14 +22,12 @@ jobs:
       - name: Clone OpenWrt Repository
         run: git clone https://github.com/coolsnowwolf/lede
 
-      - name: Configure SSH
-        if: ${{ github.event.inputs.enable-ssh == 'true' }}
-        run: |
-          mkdir -p ~/.ssh
-          echo "$SSH_PRIVATE_KEY" > ~/.ssh/id_rsa
-          chmod 600 ~/.ssh/id_rsa
-          ssh-keyscan your-openwrt-device >> ~/.ssh/known_hosts
-
+      - name: SSH connection to Actions
+        uses: P3TERX/ssh2actions@v1.0.0
+        if: (github.event.inputs.ssh == 'true' && github.event.inputs.ssh  != 'false') || contains(github.event.action, 'ssh')
+        env:
+          TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
       - name: Generate .config
         run: |
           cd lede
