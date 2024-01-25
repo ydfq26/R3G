@@ -2,7 +2,11 @@
 
 # 增加软件源
 #echo "src/gz custom https://your-custom-repo/packages" >> feeds.conf.default
-echo 'src-git smpackage https://github.com/kenzok8/small-package' >>feeds.conf.default
+#echo 'src-git smpackage https://github.com/kenzok8/small-package' >>feeds.conf.default
+
+echo 'src-git kenzo https://github.com/kenzok8/openwrt-packages' >>feeds.conf.default
+echo 'src-git small https://github.com/kenzok8/small' >>feeds.conf.default
+
 # 修改WiFi名称
 #sed -i 's/option ssid OpenWrt/option ssid YourWiFiName/' package/kernel/mac80211/files/lib/wifi/mac80211.sh
 
